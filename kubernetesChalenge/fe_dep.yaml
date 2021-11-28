@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe
+spec:
+  selector:
+    matchLabels:
+      app: nginx-test
+      tier: fe
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-test
+        tier: fe
+        track: stable
+    spec:
+       # Shared volume for inter pod communication
+      volumes:
+        - name: shared-data
+          emptyDir: {}
+
+      containers:
+        - name: nginx-container
+          image: nginx
+          ports:
+            - name: http
+              containerPort: 80
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "echo predefined string > /usr/share/nginx/html/index.html"]
+
+        - name: tcpdumper
+          image: docker.io/dockersec/tcpdump
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+          # "Reassign default entry point <tcpdump -i eth0> to have that outside"
+          # Read logs of tcp dumper in other case.
+          command: ["/bin/bash", "-c", 'tcpdump -i eth0 | sed -e "N" -e "s/\n/<br>/g" | tee -a /usr/share/nginx/html/tcpdump.html']
