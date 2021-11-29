@@ -16,11 +16,11 @@ Note: pcap capture can be easily implemented by starting local "tcpdump cmd", bu
 
 To make magick:<br>
 
->>> kubectl.exe apply -f .\fe_dep.yaml -f .\fe_service.yaml -f .\dashboard.yaml<br>
+@ kubectl.exe apply -f .\fe_dep.yaml -f .\fe_service.yaml -f .\dashboard.yaml<br>
 <br>
->>> kubectl proxy<br>
+@ kubectl proxy<br>
 <br>
->>> kubectl.exe get pod -o wide -A<br>
+@ kubectl.exe get pod -o wide -A<br>
 NAMESPACE              NAME                                        READY   STATUS    RESTARTS   AGE     IP             NODE             NOMINATED NODE   READINESS GATES<br>
 default                fe-5d99b57cc7-chb4m                         2/2     Running   0          16m     10.1.0.64      docker-desktop   <none>           <none><br>
 kube-system            coredns-558bd4d5db-528x7                    1/1     Running   1          27h     10.1.0.12      docker-desktop   <none>           <none><br>
@@ -35,11 +35,11 @@ kube-system            vpnkit-controller                           1/1     Runni
 kubernetes-dashboard   dashboard-metrics-scraper-c45b7869d-s6zzc   1/1     Running   1          27h     10.1.0.11      docker-desktop   <none>           <none><br>
 kubernetes-dashboard   kubernetes-dashboard-558998898d-tr6w7       2/2     Running   0          5h24m   10.1.0.18      docker-desktop   <none>           <none><br>
 <br>
->>> kubectl.exe get services -o wide<br>
+@ kubectl.exe get services -o wide<br>
 NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE   SELECTOR<br>
 fe           LoadBalancer   10.103.79.122   localhost     30007:32007/TCP   80m   app=nginx-test,tier=fe<br>
 kubernetes   ClusterIP      10.96.0.1       <none>        443/TCP           27h   <none><br>
 <br>
->>> kubectl.exe get deployments -o wide<br>
+@ kubectl.exe get deployments -o wide<br>
 NAME   READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS                  IMAGES                              SELECTOR<br>
 fe     1/1     1            1           20m   nginx-container,tcpdumper   nginx,docker.io/dockersec/tcpdump   app=nginx-test,tier=fe,track=stable<br>
